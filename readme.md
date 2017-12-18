@@ -1,4 +1,4 @@
-#friendly-truncate: human friendly string truncation
+# friendly-truncate: Human Friendly String Truncation
 
 Truncate strings in the middle, at a word boundary if possible, so that the
 string is at most the specified length.
