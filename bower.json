@@ -1,0 +1,31 @@
+{
+  "name": "friendly-truncate",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Coggle/friendly-truncate",
+  "authors": [
+    "James Crosby <hello@coggle.it>"
+  ],
+  "description": "Human-friendly truncation preferring word boundaries and the middle of the string.",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "keywords": [
+    "truncate",
+    "middle",
+    "chop",
+    "shorten",
+    "string",
+    "utf-8",
+    "unicode"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
