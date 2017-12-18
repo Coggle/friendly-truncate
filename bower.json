@@ -1,7 +1,6 @@
 {
   "name": "friendly-truncate",
   "main": "index.js",
-  "version": "1.0.1",
   "homepage": "https://github.com/Coggle/friendly-truncate",
   "authors": [
     "James Crosby <hello@coggle.it>"
