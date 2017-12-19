@@ -32,8 +32,6 @@ truncate.truncateMiddle = function(string, length, opts){
     var result_length;
     var i, j;
 
-    var s = process.hrtime();
-
     while( (next = boundary.exec(string)) ){
         // prune word boundaries to those within length/2 + tolerance of the
         // start/end of the string:
@@ -52,10 +50,6 @@ truncate.truncateMiddle = function(string, length, opts){
 
     // reset regex state in case caller re-uses it
     boundary.lastIndex = 0;
-
-    var se = process.hrtime(s);
-
-    var m = process.hrtime();
 
     for(i = word_boundaries_start.length-1; i >= 0; i--){
         // search for a suitable second cut
@@ -80,10 +74,6 @@ truncate.truncateMiddle = function(string, length, opts){
         }
     }
 
-    var me = process.hrtime(m);
-
-    var t = process.hrtime();
-
     // sort preferring overall length and approximately equal length of both
     // parts:
     possible_cuts.sort(function(a, b){
@@ -100,12 +90,6 @@ truncate.truncateMiddle = function(string, length, opts){
         first_cut = Math.floor(length/2);
         second_cut = string.length - (length - 1 - first_cut);
     }
-
-    var te = process.hrtime(t);
-
-    if(se[0] >= 1 || se[1] > 5000000 ||
-       me[0] >= 1 || me[1] > 5000000 ||
-       te[0] >= 1 || te[1] > 5000000) console.log(Math.round(se[0]*1000 + se[1]/1e6), Math.round(me[0]*1000 +me[1]/1e6), Math.round(te[0]*1000 + te[1]/1e6));
 
     var first_part = string.substring(0, first_cut);
     var second_part = string.substring(second_cut);
