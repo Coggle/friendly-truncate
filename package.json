@@ -1,6 +1,6 @@
 {
   "name": "friendly-truncate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Human-friendly truncation preferring word boundaries and the middle of the string.",
   "main": "index.js",
   "files": [
