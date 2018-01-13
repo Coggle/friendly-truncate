@@ -127,4 +127,35 @@ describe('truncate in middle', function(){
             }
         });
     });
+    describe("surrogate pairs", function(){
+        var s = '😀😀😀😀👨‍🍳👩‍🍳👴🏻👴🏼👴🏽👴🏾👴🏿👪👨😬😬😬😬‍👩‍👧👨‍👩‍👧‍👦👨‍👩‍👦‍👦👨‍👩‍👧‍👧👩‍👩‍👦👩‍👩‍👧👩‍👩‍👧‍👦👩‍👩‍👦‍👦👩‍👩‍👧‍👧👨‍👨‍👦👨‍👨‍👧👨‍👨‍👧‍👦👨‍👨‍👦‍👦👨‍👨‍👧‍👧';
+
+        it("doesn't break surrogate pairs", function(){
+            for(var t = 0; t < 30; t++){
+                for(var i = 0; i < 100; i++){
+                    // encodeURIComponent throws on invalid surrogate pairs...
+                    var r = truncate.truncateMiddle(s, i, {tolerance:t});
+                    try{
+                        encodeURIComponent(r);
+                    }catch(e){
+                        throw(new Error("invalid surrogate pair in: '"+r+"'"));
+                    }
+                }
+            }
+        });
+        it("never exceeds length", function(){
+            for(var t = 0; t < 30; t++){
+                for(var i = 0; i < 100; i++){
+                    assert(truncate.truncateMiddle(s, i, {tolerance:t}).length <= i);
+                }
+            }
+        });
+        it("never differs from length by more than tolerance + 1", function(){
+            for(var t = 0; t < 30; t++){
+                for(var i = 0; i <= 100; i++){
+                    assert(i - truncate.truncateMiddle(s, i, {tolerance:t}).length <= t+1);
+                }
+            }
+        });
+    });
 });

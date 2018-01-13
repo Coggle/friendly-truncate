@@ -3,8 +3,8 @@
 Truncate strings in the middle, at a word boundary if possible, so that the
 string is at most the specified length.
 
-Supports strings with unicode characters, and customisable joining character
-and word boundaries.
+Supports strings with unicode characters, including surrogate pairs, and
+supports customisable joining character and word boundaries.
 
 ```js
 var truncate = require('friendly-truncate');
@@ -74,6 +74,12 @@ Supported options:
    match globally. Defaults to `/[\s.\-_,;:]/g`
  * **tolerance**: amount truncated length is allowed to differ from requested
    length. Defaults to the lower of length/4 or 20;
+   If the string contains surrogate pairs, the tolerance may be exceeded by 1
+   if necessary to avoid cutting a surrogate pair in half.
+
+The length is interpreted in code units, as is normal for javascript strings.
+(i.e. an emoji or other character consisting of a surrogate pair is considered
+length two.)
 
 
 ## Examples

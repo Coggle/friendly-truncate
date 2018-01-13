@@ -91,6 +91,21 @@ truncate.truncateMiddle = function(string, length, opts){
         second_cut = string.length - (length - 1 - first_cut);
     }
 
+    // check if we would cut a surrogate pair in half, if so adjust the cut:
+    // (NB: we're assuming string containing only valid surrogate pairs here)
+    if(/[\uD800-\uDBFF]/.exec(string[first_cut-1])){
+        if(second_cut < string.length){
+            first_cut += 1;
+            second_cut += 1;
+        }else{
+            first_cut -= 1;
+            second_cut -= 1;
+        }
+    }
+    if(/[\uDC00-\uDFFF]/.exec(string[second_cut])){
+        second_cut += 1;
+    }
+
     var first_part = string.substring(0, first_cut);
     var second_part = string.substring(second_cut);
 
