@@ -112,6 +112,66 @@ truncate.truncateMiddle = function(string, length, opts){
     return first_part + join + second_part;
 };
 
+truncate.truncateEnd = function(string, length, opts){
+    // truncate string by chopping it at the end, preferring to cut at word
+    // boundaries (whitespace and punctuation), then appending the specified
+    // ellipsis (or the ellipsis character by default).
+
+    // nothing to do if the length is longer than string:
+    if(string.length <= length) return string;
+    // special case negative and zero lengths for robustness:
+    if(length <= 0) return '';
+
+    if(typeof opts === 'undefined') opts = {};
+
+    var ellipsis = opts.ellipsis;
+    if(typeof ellipsis === 'undefined') ellipsis = '…';
+
+    var boundary = opts.boundary;
+    if(typeof boundary === 'undefined') boundary = /[\s.\-_,;:]/g;
+
+    var tolerance = opts.tolerance;
+    if(typeof tolerance === 'undefined') tolerance = Math.min(20, Math.round(length/4));
+
+    // find the word boundaries near to the end of the truncated segment.
+    boundary.lastIndex = Math.floor(length - (tolerance + 1));
+    var next;
+    var word_boundaries = [];
+
+    while((next = boundary.exec(string)) ){
+        // prune word boundaries to those within 'tolerance' of the
+        // specified length
+        if(next.index < length && ((length - next.index) <= tolerance)){
+            word_boundaries.push(next.index);
+        }
+        if(next.index >= length){
+            break;
+        }
+    }
+    // reset regex state in case caller re-uses it
+    boundary.lastIndex = 0;
+
+    var best_cut = null;
+
+    for(var i = 0; i < word_boundaries.length; i++){
+        if(best_cut === null || (word_boundaries[i] > best_cut)){
+            best_cut = word_boundaries[i];
+        }
+    }
+
+    // if no word-boundary cuts are suitable, cut in the middle of a word:
+    if(best_cut === null){
+        best_cut = Math.max(0, length - ellipsis.length);
+    }
+
+    // check if we would cut a surrogate pair in half, if so adjust the cut:
+    // (NB: we're assuming string containing only valid surrogate pairs here)
+    if(/[\uD800-\uDBFF]/.exec(string[best_cut-1])){
+        best_cut -= 1;
+    }
+    return string.substring(0, best_cut) + ellipsis;
+};
+
 if (typeof module !== "undefined" && module.exports) {
     // node
     module.exports = truncate;

@@ -81,6 +81,21 @@ The length is interpreted in code units, as is normal for javascript strings.
 (i.e. an emoji or other character consisting of a surrogate pair is considered
 length two.)
 
+### `truncate.truncateEnd(string, length, options)`
+
+Supported options:
+
+ * **ellipsis**: Character inserted at end of truncated string. Defaults to '…' (ellipsis)
+ * **boundary**: regular expression matching boundaries to prefer breaking at. Must
+   match globally. Defaults to `/[\s.\-_,;:]/g`
+ * **tolerance**: amount truncated length is allowed to differ from requested
+   length. Defaults to the lower of length/4 or 20;
+   If the string contains surrogate pairs, the tolerance may be exceeded by 1
+   if necessary to avoid cutting a surrogate pair in half.
+
+The length is interpreted in code units, as is normal for javascript strings.
+(i.e. an emoji or other character consisting of a surrogate pair is considered
+length two.)
 
 ## Examples
 
