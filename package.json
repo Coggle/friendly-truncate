@@ -4,7 +4,8 @@
   "description": "Human-friendly truncation preferring word boundaries and the middle of the string.",
   "main": "index.js",
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "scripts": {
     "test": "mocha",
